@@ -9,14 +9,12 @@ import Solvers
 import Util
 import unittest
 
-# Valid 3x3
 GRID_VALID_1 = [
     [1, 0, 1],
     [0, 0, 1],
     [1, 0, 1]
 ]
 
-# Valid 15x15
 GRID_VALID_2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
     [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
@@ -35,11 +33,34 @@ GRID_VALID_2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0],
 ]
 
-# Invalid 3x3
 GRID_INVALID_1 = [
     [1, 0, 1],
     [0, 1, 1],
     [1, 0, 1]
+]
+
+GRID_INVALID_2 = [
+    [1, 1, 1],
+    [0, 0, 1],
+    [1, 0, 1]
+]
+
+GRID_INVALID_3 = [
+    [1, 0, 1],
+    [0, 0, 1],
+    [1, 1, 1]
+]
+
+GRID_INVALID_4 = [
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 0]
+]
+
+GRID_INVALID_5 = [
+    [0, 0, 1],
+    [0, 1, 0],
+    [0, 0, 0]
 ]
 
 class TestGame(unittest.TestCase):
@@ -79,8 +100,20 @@ class TestGame(unittest.TestCase):
     def test_fleet_2(self):
         self.assertEqual(Game.Ocean(GRID_VALID_2).getFleet(), {1: 5, 2: 4, 3: 3, 4: 2, 5: 1})
 
-    def test_init_3(self):
+    def test_invalid_1(self):
         self.assertRaises(AssertionError, Game.Ocean, GRID_INVALID_1)
+
+    def test_invalid_2(self):
+        self.assertRaises(AssertionError, Game.Ocean, GRID_INVALID_2)
+
+    def test_invalid_3(self):
+        self.assertRaises(AssertionError, Game.Ocean, GRID_INVALID_3)
+
+    def test_invalid_4(self):
+        self.assertRaises(AssertionError, Game.Ocean, GRID_INVALID_4)
+
+    def test_invalid_5(self):
+        self.assertRaises(AssertionError, Game.Ocean, GRID_INVALID_5)
 
 class TestUtil(unittest.TestCase):
     def test_pad_centre_not_required(self):
