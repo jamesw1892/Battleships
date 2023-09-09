@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Main Ocean class for representing and getting information from the grid
+Main Ocean class for representing and getting information from the grid.
 """
 
 import Util
