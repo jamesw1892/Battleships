@@ -36,34 +36,34 @@ INIT_2 = [
 ]
 
 class TestGame(unittest.TestCase):
-    def test_init_1_valid(self):
+    def test_init_1(self):
         Game.Ocean(INIT_1)
 
-    def test_init_1_width(self):
+    def test_width_1(self):
         self.assertEqual(Game.Ocean(INIT_1).getWidth(), 3)
 
-    def test_init_1_height(self):
+    def test_height_1(self):
         self.assertEqual(Game.Ocean(INIT_1).getHeight(), 3)
 
-    def test_init_1_rowNums(self):
+    def test_rowNums_1(self):
         self.assertEqual(Game.Ocean(INIT_1).getRowNums(), [2, 1, 2])
 
-    def test_init_1_colNums(self):
+    def test_colNums_1(self):
         self.assertEqual(Game.Ocean(INIT_1).getColNums(), [2, 0, 3])
 
-    def test_init_2_valid(self):
+    def test_init_2(self):
         Game.Ocean(INIT_2)
 
-    def test_init_2_width(self):
+    def test_width_2(self):
         self.assertEqual(Game.Ocean(INIT_2).getWidth(), 15)
 
-    def test_init_2_height(self):
+    def test_height_2(self):
         self.assertEqual(Game.Ocean(INIT_2).getHeight(), 15)
 
-    def test_init_2_rowNums(self):
+    def test_rowNums_2(self):
         self.assertEqual(Game.Ocean(INIT_2).getRowNums(), [3, 2, 1, 1, 4, 1, 3, 8, 1, 2, 0, 1, 1, 5, 2])
 
-    def test_init_2_colNums(self):
+    def test_colNums_2(self):
         self.assertEqual(Game.Ocean(INIT_2).getColNums(), [4, 2, 1, 2, 2, 2, 2, 1, 4, 4, 5, 2, 1, 2, 1])
 
 class TestUtil(unittest.TestCase):
