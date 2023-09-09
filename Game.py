@@ -51,8 +51,8 @@ class Ocean:
 
                         # Check surrounding cells aren't ships
                         if r + 1 < self.height:
-                            for c2 in range(max(c - 1, 0), min(c + size + 1, self.width - 1)):
-                                assert not grid_cp[r + 1][c2], f"Cross of ships around cell ({c2}, {r})!"
+                            for c2 in range(max(c - 1, 0), min(c + size + 1, self.width)):
+                                assert not grid_cp[r + 1][c2], f"Two ships adjacent around cell ({c2}, {r})!"
 
                     # If extends down
                     elif r + 1 < self.height and grid_cp[r + 1][c]:
@@ -66,15 +66,25 @@ class Ocean:
 
                         # Check surrounding cells aren't ships
                         if c > 0:
-                            for r2 in range(r + 1, min(r + size + 1, self.height - 1)):
-                                assert not grid_cp[r2][c - 1], f"Cross of ships around cell ({c}, {r2})"
+                            for r2 in range(r + 1, min(r + size + 1, self.height)):
+                                assert not grid_cp[r2][c - 1], f"Two ships adjacent around cell ({c}, {r2})"
                         if c + 1 < self.width:
-                            for r2 in range(r, min(r + size + 1, self.height - 1)):
-                                assert not grid_cp[r2][c + 1], f"Cross of ships around cell ({c}, {r2})"
+                            for r2 in range(r, min(r + size + 1, self.height)):
+                                assert not grid_cp[r2][c + 1], f"Two ships adjacent around cell ({c}, {r2})"
 
                     # If neither then is a size 1 ship
                     else:
                         size = 1
+
+                        # Check surrounding cells aren't ships
+                        # Only have to check these as already checked top 3 and
+                        # left 1 and if were directly right or down then
+                        # wouldn't be in this else statement
+                        if r + 1 < self.height:
+                            if c > 0:
+                                assert not grid_cp[r + 1][c - 1], f"Two ships adjacent around cell ({c}, {r})"
+                            if c + 1 < self.width:
+                                assert not grid_cp[r + 1][c + 1], f"Two ships adjacent around cell ({c}, {r})"
 
                     # Add to fleet
                     if size in self.fleet:
