@@ -20,12 +20,67 @@ class Ocean:
         for row in grid:
             assert len(row) == self.width, "All rows in grid must have same width"
 
-        # TODO: Calculate fleet and verify valid
+        # Create a deep copy of grid to calculate fleet and check valid
         self.fleet = dict()
-        for row_index, row in enumerate(grid):
-            for col_index, cell in enumerate(row):
-                if cell:
-                    pass
+        grid_cp = []
+        for row in grid:
+            grid_cp.append(row.copy())
+
+        # Go through cells top to bottom and within that, left to right.
+        # If find a ship: (1) extend it as far as possible right or down (as
+        # can't extend up or left), (2) unset those cells in the copy so we
+        # don't see them in subsequent iterations, (3) check surrounding cells
+        # aren't ships as would be invalid, and (4) add to fleet.
+        # When checking surrounding cells, we only need to check those down and
+        # right (as would have seen in subsequent iteration) and we don't need
+        # to check those at the far end or we would have extended it further.
+        for r in range(self.height):
+            for c in range(self.width):
+                if grid_cp[r][c]:
+                    grid_cp[r][c] = False
+
+                    # If extends right
+                    if c + 1 < self.width and grid_cp[r][c + 1]:
+                        size = 2
+                        grid_cp[r][c + 1] = False
+
+                        # Extend all the way, unsetting as go
+                        while c + size < self.width and grid_cp[r][c + size]:
+                            grid_cp[r][c + size] = False
+                            size += 1
+
+                        # Check surrounding cells aren't ships
+                        if r + 1 < self.height:
+                            for c2 in range(max(c - 1, 0), min(c + size + 1, self.width - 1)):
+                                assert not grid_cp[r + 1][c2], f"Cross of ships around cell ({c2}, {r})!"
+
+                    # If extends down
+                    elif r + 1 < self.height and grid_cp[r + 1][c]:
+                        size = 2
+                        grid_cp[r + 1][c] = False
+
+                        # Extend all the way, unsetting as go
+                        while r + size < self.height and grid_cp[r + size][c]:
+                            grid_cp[r + size][c] = False
+                            size += 1
+
+                        # Check surrounding cells aren't ships
+                        if c > 0:
+                            for r2 in range(r + 1, min(r + size + 1, self.height - 1)):
+                                assert not grid_cp[r2][c - 1], f"Cross of ships around cell ({c}, {r2})"
+                        if c + 1 < self.width:
+                            for r2 in range(r, min(r + size + 1, self.height - 1)):
+                                assert not grid_cp[r2][c + 1], f"Cross of ships around cell ({c}, {r2})"
+
+                    # If neither then is a size 1 ship
+                    else:
+                        size = 1
+
+                    # Add to fleet
+                    if size in self.fleet:
+                        self.fleet[size] += 1
+                    else:
+                        self.fleet[size] = 1
 
     def getWidth(self) -> int:
         """

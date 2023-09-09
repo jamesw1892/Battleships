@@ -35,6 +35,13 @@ GRID_2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0],
 ]
 
+# Invalid 3x3
+GRID_3 = [
+    [1, 0, 1],
+    [0, 1, 1],
+    [1, 0, 1]
+]
+
 class TestGame(unittest.TestCase):
     def test_init_1(self):
         Game.Ocean(GRID_1)
@@ -51,6 +58,9 @@ class TestGame(unittest.TestCase):
     def test_colNums_1(self):
         self.assertEqual(Game.Ocean(GRID_1).getColNums(), [2, 0, 3])
 
+    def test_fleet_1(self):
+        self.assertEqual(Game.Ocean(GRID_1).getFleet(), {1: 2, 3: 1})
+
     def test_init_2(self):
         Game.Ocean(GRID_2)
 
@@ -65,6 +75,12 @@ class TestGame(unittest.TestCase):
 
     def test_colNums_2(self):
         self.assertEqual(Game.Ocean(GRID_2).getColNums(), [4, 2, 1, 2, 2, 2, 2, 1, 4, 4, 5, 2, 1, 2, 1])
+
+    def test_fleet_2(self):
+        self.assertEqual(Game.Ocean(GRID_2).getFleet(), {1: 5, 2: 4, 3: 3, 4: 2, 5: 1})
+
+    def test_init_3(self):
+        self.assertRaises(AssertionError, Game.Ocean, GRID_3)
 
 class TestUtil(unittest.TestCase):
     def test_pad_centre_not_required(self):
