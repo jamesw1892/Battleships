@@ -115,6 +115,33 @@ class TestGame(unittest.TestCase):
     def test_invalid_5(self):
         self.assertRaises(AssertionError, Game.Ocean, GRID_INVALID_5)
 
+    def test_equal_1obj_1obj(self):
+        self.assertTrue(Game.Ocean(GRID_VALID_1) == Game.Ocean(GRID_VALID_1))
+
+    def test_equal_1obj_1list(self):
+        self.assertTrue(Game.Ocean(GRID_VALID_1) == GRID_VALID_1)
+
+    def test_equal_1list_1obj(self):
+        self.assertTrue(GRID_VALID_1 == Game.Ocean(GRID_VALID_1))
+
+    def test_equal_1obj_2obj(self):
+        self.assertFalse(Game.Ocean(GRID_VALID_1) == Game.Ocean(GRID_VALID_2))
+
+    def test_equal_1obj_2list(self):
+        self.assertFalse(Game.Ocean(GRID_VALID_1) == GRID_VALID_2)
+
+    def test_equal_1list_2obj(self):
+        self.assertFalse(GRID_VALID_1 == Game.Ocean(GRID_VALID_2))
+
+    def test_equal_2obj_1obj(self):
+        self.assertFalse(Game.Ocean(GRID_VALID_2) == Game.Ocean(GRID_VALID_1))
+
+    def test_equal_2obj_1list(self):
+        self.assertFalse(Game.Ocean(GRID_VALID_2) == GRID_VALID_1)
+
+    def test_equal_2list_1obj(self):
+        self.assertFalse(GRID_VALID_2 == Game.Ocean(GRID_VALID_1))
+
 class TestUtil(unittest.TestCase):
     def test_pad_centre_not_required(self):
         self.assertEqual(Util.padCentre("hi", 2), "hi")
