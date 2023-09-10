@@ -5,6 +5,7 @@ Tests.
 """
 
 import Game
+import Generators
 import Solvers
 import Util
 import unittest
@@ -185,6 +186,54 @@ class TestUtil(unittest.TestCase):
     def test_intToUnsigned1Byte_255(self):
         self.assertEqual(Util.intToUnsigned1Byte(255), "11111111")
 
+class TestGenerators(unittest.TestCase):
+    def test_exhaustive_1_1(self):
+        self.assertEqual(Generators.generateExhaustive(1, 1), set((
+            Game.Ocean([[False]]),
+            Game.Ocean([[True]])
+        )))
+
+    def test_exhaustive_1_2(self):
+        self.assertEqual(Generators.generateExhaustive(1, 2), set((
+            Game.Ocean([[False],
+                        [False]]),
+            Game.Ocean([[False],
+                        [True ]]),
+            Game.Ocean([[True ],
+                        [False]]),
+            Game.Ocean([[True ],
+                        [True ]])
+        )))
+
+    def test_exhaustive_2_1(self):
+        self.assertEqual(Generators.generateExhaustive(2, 1), set((
+            Game.Ocean([[False, False]]),
+            Game.Ocean([[False, True ]]),
+            Game.Ocean([[True , False]]),
+            Game.Ocean([[True , True ]])
+        )))
+
+    def test_exhaustive_2_2(self):
+        self.assertEqual(Generators.generateExhaustive(2, 2), set((
+            Game.Ocean([[False, False],
+                        [False, False]]),
+            Game.Ocean([[False, False],
+                        [False, True ]]),
+            Game.Ocean([[False, False],
+                        [True , False]]),
+            Game.Ocean([[False, False],
+                        [True , True ]]),
+            Game.Ocean([[False, True ],
+                        [False, False]]),
+            Game.Ocean([[False, True ],
+                        [False, True ]]),
+            Game.Ocean([[True , False],
+                        [False, False]]),
+            Game.Ocean([[True , False],
+                        [True , False]]),
+            Game.Ocean([[True , True ],
+                        [False, False]]),
+        )))
+
 if __name__ == "__main__":
-    # Solvers.solve(Solvers.dummySolver, Game.Ocean(GRID_VALID_2))
     unittest.main()
