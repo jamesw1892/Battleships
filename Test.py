@@ -153,6 +153,20 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(Util.padCentre("hi", 4), " hi ")
     def test_pad_centre_short(self):
         self.assertEqual(Util.padCentre("hi", 1), "hi")
+    def test_intToUnsigned1Byte_neg1(self):
+        self.assertRaises(AssertionError, Util.intToUnsigned1Byte, -1)
+    def test_intToUnsigned1Byte_256(self):
+        self.assertRaises(AssertionError, Util.intToUnsigned1Byte, 256)
+    def test_intToUnsigned1Byte_0(self):
+        self.assertEqual(Util.intToUnsigned1Byte(0), "00000000")
+    def test_intToUnsigned1Byte_1(self):
+        self.assertEqual(Util.intToUnsigned1Byte(1), "00000001")
+    def test_intToUnsigned1Byte_2(self):
+        self.assertEqual(Util.intToUnsigned1Byte(2), "00000010")
+    def test_intToUnsigned1Byte_3(self):
+        self.assertEqual(Util.intToUnsigned1Byte(3), "00000011")
+    def test_intToUnsigned1Byte_255(self):
+        self.assertEqual(Util.intToUnsigned1Byte(255), "11111111")
 
 if __name__ == "__main__":
     # Solvers.solve(Solvers.dummySolver, Game.Ocean(GRID_VALID_2))
