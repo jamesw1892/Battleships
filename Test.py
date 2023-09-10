@@ -33,36 +33,6 @@ GRID_VALID_2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0],
 ]
 
-GRID_INVALID_1 = [
-    [1, 0, 1],
-    [0, 1, 1],
-    [1, 0, 1]
-]
-
-GRID_INVALID_2 = [
-    [1, 1, 1],
-    [0, 0, 1],
-    [1, 0, 1]
-]
-
-GRID_INVALID_3 = [
-    [1, 0, 1],
-    [0, 0, 1],
-    [1, 1, 1]
-]
-
-GRID_INVALID_4 = [
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 0]
-]
-
-GRID_INVALID_5 = [
-    [0, 0, 1],
-    [0, 1, 0],
-    [0, 0, 0]
-]
-
 class TestGame(unittest.TestCase):
     def test_init_1(self):
         Game.Ocean(GRID_VALID_1)
@@ -101,19 +71,39 @@ class TestGame(unittest.TestCase):
         self.assertEqual(Game.Ocean(GRID_VALID_2).getFleet(), {1: 5, 2: 4, 3: 3, 4: 2, 5: 1})
 
     def test_invalid_1(self):
-        self.assertRaises(AssertionError, Game.Ocean, GRID_INVALID_1)
+        self.assertRaises(AssertionError, Game.Ocean, [
+            [1, 0, 1],
+            [0, 1, 1],
+            [1, 0, 1]
+        ])
 
     def test_invalid_2(self):
-        self.assertRaises(AssertionError, Game.Ocean, GRID_INVALID_2)
+        self.assertRaises(AssertionError, Game.Ocean, [
+            [1, 1, 1],
+            [0, 0, 1],
+            [1, 0, 1]
+        ])
 
     def test_invalid_3(self):
-        self.assertRaises(AssertionError, Game.Ocean, GRID_INVALID_3)
+        self.assertRaises(AssertionError, Game.Ocean, [
+            [1, 0, 1],
+            [0, 0, 1],
+            [1, 1, 1]
+        ])
 
     def test_invalid_4(self):
-        self.assertRaises(AssertionError, Game.Ocean, GRID_INVALID_4)
+        self.assertRaises(AssertionError, Game.Ocean, [
+            [1, 0, 0],
+            [0, 1, 0],
+            [0, 0, 0]
+        ])
 
     def test_invalid_5(self):
-        self.assertRaises(AssertionError, Game.Ocean, GRID_INVALID_5)
+        self.assertRaises(AssertionError, Game.Ocean, [
+            [0, 0, 1],
+            [0, 1, 0],
+            [0, 0, 0]
+        ])
 
     def test_equal_1obj_1obj(self):
         self.assertTrue(Game.Ocean(GRID_VALID_1) == Game.Ocean(GRID_VALID_1))
