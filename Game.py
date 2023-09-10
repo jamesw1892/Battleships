@@ -157,3 +157,23 @@ class Ocean:
         if isinstance(other, Ocean):
             other = other.grid
         return other == self.grid
+
+    def __hash__(self):
+        """
+        Return an integer uniquely representing the grid
+        """
+
+        # Convert the width and height into a 1-byte unsigned binary number - 
+        # as each can be max 255
+        bin_str = Util.intToUnsigned1Byte(self.width) + Util.intToUnsigned1Byte(self.height)
+
+        # Add each cell to the bin string as a single bit
+        for row in self.grid:
+            for cell in row:
+                if cell:
+                    bin_str += "1"
+                else:
+                    bin_str += "0"
+
+        # Convert to base 10
+        return int(bin_str, base=2)

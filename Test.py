@@ -153,6 +153,12 @@ class TestGame(unittest.TestCase):
     def test_equal_2list_1obj(self):
         self.assertFalse(GRID_VALID_2 == Game.Ocean(GRID_VALID_1))
 
+    def test_hash_1(self):
+        self.assertEqual(hash(Game.Ocean(GRID_VALID_1)), int("0000001100000011101001101", base=2))
+
+    def test_hash_2(self):
+        self.assertEqual(hash(Game.Ocean(GRID_VALID_2)), hash(int("0000111100001111000000001011000100000001000000000000001000000000000001000000000111000010000000000000010000111000000000000000011100011111100000000000000000100000010000000000000000000000000000100000000000000100000110000110100000000000000100010", base=2)))
+
 class TestUtil(unittest.TestCase):
     def test_pad_centre_not_required(self):
         self.assertEqual(Util.padCentre("hi", 2), "hi")
