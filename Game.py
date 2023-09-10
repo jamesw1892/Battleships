@@ -13,12 +13,18 @@ class Ocean:
         each position. An AssertionError will be thrown if it is invalid.
         """
         self.grid = grid
-        self.height = len(grid)
-        assert self.height >= 1, "Grid must be at least 1x1"
-        self.width = len(grid[0])
-        assert self.width >= 1, "Grid must be at least 1x1"
-        for row in grid:
-            assert len(row) == self.width, "All rows in grid must have same width"
+        try:
+            self.height = len(grid)
+            self.width = len(grid[0])
+            for row in grid:
+                assert len(row) == self.width, "All rows in grid must have same width"
+                for index, cell in enumerate(row):
+                    row[index] = bool(cell)
+
+        except TypeError:
+            assert False, "Grid must be an iterable containing iterables containing bools"
+
+        assert 1 <= self.height <= 255 and 1 <= self.width <= 255, "Grid must be at least 1x1 and at most 255x255"
 
         # Create a deep copy of grid to calculate fleet and check valid
         self.fleet = dict()

@@ -70,35 +70,56 @@ class TestGame(unittest.TestCase):
     def test_fleet_2(self):
         self.assertEqual(Game.Ocean(GRID_VALID_2).getFleet(), {1: 5, 2: 4, 3: 3, 4: 2, 5: 1})
 
-    def test_invalid_1(self):
+    def test_invalid_none(self):
+        self.assertRaises(AssertionError, Game.Ocean, None)
+
+    def test_invalid_no_outer_iterable(self):
+        self.assertRaises(AssertionError, Game.Ocean, Game.Ocean(GRID_VALID_1))
+
+    def test_invalid_no_inner_iterable(self):
+        self.assertRaises(AssertionError, Game.Ocean, [Game.Ocean(GRID_VALID_1)])
+
+    def test_invalid_empty(self):
+        self.assertRaises(AssertionError, Game.Ocean, [[]])
+
+    def test_invalid_too_wide(self):
+        self.assertRaises(AssertionError, Game.Ocean, [[False] * 256])
+
+    def test_invalid_too_high(self):
+        self.assertRaises(AssertionError, Game.Ocean, [[False]] * 256)
+
+    def test_invalid_inconsistent_widths(self):
+        self.assertRaises(AssertionError, Game.Ocean, [[False], [False, False]])
+
+    def test_invalid_ships_adjacent_1(self):
         self.assertRaises(AssertionError, Game.Ocean, [
             [1, 0, 1],
             [0, 1, 1],
             [1, 0, 1]
         ])
 
-    def test_invalid_2(self):
+    def test_invalid_ships_adjacent_2(self):
         self.assertRaises(AssertionError, Game.Ocean, [
             [1, 1, 1],
             [0, 0, 1],
             [1, 0, 1]
         ])
 
-    def test_invalid_3(self):
+    def test_invalid_ships_adjacent_3(self):
         self.assertRaises(AssertionError, Game.Ocean, [
             [1, 0, 1],
             [0, 0, 1],
             [1, 1, 1]
         ])
 
-    def test_invalid_4(self):
+    def test_invalid_ships_adjacent_4(self):
         self.assertRaises(AssertionError, Game.Ocean, [
             [1, 0, 0],
             [0, 1, 0],
             [0, 0, 0]
         ])
 
-    def test_invalid_5(self):
+    def test_invalid_ships_adjacent_5(self):
         self.assertRaises(AssertionError, Game.Ocean, [
             [0, 0, 1],
             [0, 1, 0],
