@@ -179,6 +179,9 @@ class Ocean:
 
         return out
 
+    def __repr__(self):
+        return f"Ocean(\n{self}\n)"
+
     def __eq__(self, other):
         """
         Return whether 'other' represents the same grid as this object.
