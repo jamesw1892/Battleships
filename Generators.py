@@ -35,10 +35,8 @@ def generateExhaustive(width: int, height: int) -> set[Game.Ocean]:
     # For each possible combination of cells:
     for cells in itertools.product((True, False), repeat=width*height):
 
-        # Convert the 1D array of cells into a 2D grid
-        grid = []
-        for start_index in range(0, width * height, width):
-            grid.append(list(cells[start_index:start_index + width]))
+        # Convert the 1D iterable of cells into a 2D grid
+        grid = Util.make2D(cells, width)
 
         # Instantiate Ocean and if valid, add to set
         try:
