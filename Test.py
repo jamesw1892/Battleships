@@ -270,67 +270,130 @@ class TestUtil(unittest.TestCase):
         self.assertRaises(ValueError, Util.make2D, [1, 2, 3, 4], -1)
 
 VALID_1x1_OCEANS = (
-    Game.Ocean([[False]]),
-    Game.Ocean([[True]])
+    [[False]],
+    [[True]]
 )
+VALID_1x1_OCEANS_0 = (VALID_1x1_OCEANS[0],)
+VALID_1x1_OCEANS_1 = (VALID_1x1_OCEANS[1],)
 
 VALID_1x2_OCEANS = (
-    Game.Ocean([[False],
-                [False]]),
-    Game.Ocean([[False],
-                [True ]]),
-    Game.Ocean([[True ],
-                [False]]),
-    Game.Ocean([[True ],
-                [True ]])
+    [[False],
+     [False]],
+    [[False],
+     [True ]],
+    [[True ],
+     [False]],
+    [[True ],
+     [True ]]
 )
+VALID_1x2_OCEANS_0 = (VALID_1x2_OCEANS[0],)
+VALID_1x2_OCEANS_1 = (VALID_1x2_OCEANS[1], VALID_1x2_OCEANS[2])
+VALID_1x2_OCEANS_2 = (VALID_1x2_OCEANS[3],)
 
 VALID_2x1_OCEANS = (
-    Game.Ocean([[False, False]]),
-    Game.Ocean([[False, True ]]),
-    Game.Ocean([[True , False]]),
-    Game.Ocean([[True , True ]])
+    [[False, False]],
+    [[False, True ]],
+    [[True , False]],
+    [[True , True ]]
 )
+VALID_2x1_OCEANS_0 = (VALID_2x1_OCEANS[0],)
+VALID_2x1_OCEANS_1 = (VALID_2x1_OCEANS[1], VALID_2x1_OCEANS[2])
+VALID_2x1_OCEANS_2 = (VALID_2x1_OCEANS[3],)
 
 VALID_2x2_OCEANS = (
-    Game.Ocean([[False, False],
-                [False, False]]),
-    Game.Ocean([[False, False],
-                [False, True ]]),
-    Game.Ocean([[False, False],
-                [True , False]]),
-    Game.Ocean([[False, False],
-                [True , True ]]),
-    Game.Ocean([[False, True ],
-                [False, False]]),
-    Game.Ocean([[False, True ],
-                [False, True ]]),
-    Game.Ocean([[True , False],
-                [False, False]]),
-    Game.Ocean([[True , False],
-                [True , False]]),
-    Game.Ocean([[True , True ],
-                [False, False]]),
+    [[False, False],
+     [False, False]],
+    [[False, False],
+     [False, True ]],
+    [[False, False],
+     [True , False]],
+    [[False, False],
+     [True , True ]],
+    [[False, True ],
+     [False, False]],
+    [[False, True ],
+     [False, True ]],
+    [[True , False],
+     [False, False]],
+    [[True , False],
+     [True , False]],
+    [[True , True ],
+     [False, False]],
 )
+VALID_2x2_OCEANS_0 = (VALID_2x2_OCEANS[0],)
+VALID_2x2_OCEANS_1 = (VALID_2x2_OCEANS[1], VALID_2x2_OCEANS[2], VALID_2x2_OCEANS[4], VALID_2x2_OCEANS[6])
+VALID_2x2_OCEANS_2 = (VALID_2x2_OCEANS[3], VALID_2x2_OCEANS[5], VALID_2x2_OCEANS[7], VALID_2x2_OCEANS[8])
 
 class TestGenerators(unittest.TestCase):
-    def test_exhaustive_1_1(self):
+    def test_exhaustive_1_1_any(self):
         self.assertEqual(tuple(Generators.generateExhaustive(1, 1)), VALID_1x1_OCEANS)
-    def test_exhaustive_1_2(self):
+    def test_exhaustive_1_1_fleet_0(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(1, 1, dict())), VALID_1x1_OCEANS_0)
+    def test_exhaustive_1_1_fleet_1(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(1, 1, {1: 1})), VALID_1x1_OCEANS_1)
+    def test_exhaustive_1_1_fleet_2(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(1, 1, {1: 2})), tuple())
+    def test_exhaustive_1_2_any(self):
         self.assertEqual(tuple(Generators.generateExhaustive(1, 2)), VALID_1x2_OCEANS)
-    def test_exhaustive_2_1(self):
+    def test_exhaustive_1_2_fleet_0(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(1, 2, dict())), VALID_1x2_OCEANS_0)
+    def test_exhaustive_1_2_fleet_1(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(1, 2, {1: 1})), VALID_1x2_OCEANS_1)
+    def test_exhaustive_1_2_fleet_2(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(1, 2, {2: 1})), VALID_1x2_OCEANS_2)
+    def test_exhaustive_1_2_fleet_1_2(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(1, 2, {1: 2})), tuple())
+    def test_exhaustive_2_1_any(self):
         self.assertEqual(tuple(Generators.generateExhaustive(2, 1)), VALID_2x1_OCEANS)
-    def test_exhaustive_2_2(self):
+    def test_exhaustive_2_1_fleet_0(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 1, dict())), VALID_2x1_OCEANS_0)
+    def test_exhaustive_2_1_fleet_1(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 1, {1: 1})), VALID_2x1_OCEANS_1)
+    def test_exhaustive_2_1_fleet_2(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 1, {2: 1})), VALID_2x1_OCEANS_2)
+    def test_exhaustive_2_1_fleet_1_2(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 1, {1: 2})), tuple())
+    def test_exhaustive_2_2_any(self):
         self.assertEqual(tuple(Generators.generateExhaustive(2, 2)), VALID_2x2_OCEANS)
+    def test_exhaustive_2_2_fleet_0(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 2, dict())), VALID_2x2_OCEANS_0)
+    def test_exhaustive_2_2_fleet_1(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 2, {1: 1})), VALID_2x2_OCEANS_1)
+    def test_exhaustive_2_2_fleet_2(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 2, {2: 1})), VALID_2x2_OCEANS_2)
+    def test_exhaustive_2_2_fleet_1_2(self):
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 2, {1: 2})), tuple())
 
-    def test_random_1_1(self):
+    def test_random_1_1_any(self):
         self.assertIn(Generators.generateRandom(1, 1), VALID_1x1_OCEANS)
-    def test_random_1_2(self):
+    def test_random_1_1_fleet_0(self):
+        self.assertIn(Generators.generateRandom(1, 1, dict()), VALID_1x1_OCEANS_0)
+    def test_random_1_1_fleet_1(self):
+        self.assertIn(Generators.generateRandom(1, 1, {1: 1}), VALID_1x1_OCEANS_1)
+    def test_random_1_2_any(self):
         self.assertIn(Generators.generateRandom(1, 2), VALID_1x2_OCEANS)
-    def test_random_2_1(self):
+    def test_random_1_2_fleet_0(self):
+        self.assertIn(Generators.generateRandom(1, 2, dict()), VALID_1x2_OCEANS_0)
+    def test_random_1_2_fleet_1(self):
+        self.assertIn(Generators.generateRandom(1, 2, {1: 1}), VALID_1x2_OCEANS_1)
+    def test_random_1_2_fleet_2(self):
+        self.assertIn(Generators.generateRandom(1, 2, {2: 1}), VALID_1x2_OCEANS_2)
+    def test_random_2_1_any(self):
         self.assertIn(Generators.generateRandom(2, 1), VALID_2x1_OCEANS)
-    def test_random_2_2(self):
+    def test_random_2_1_fleet_0(self):
+        self.assertIn(Generators.generateRandom(2, 1, dict()), VALID_2x1_OCEANS_0)
+    def test_random_2_1_fleet_1(self):
+        self.assertIn(Generators.generateRandom(2, 1, {1: 1}), VALID_2x1_OCEANS_1)
+    def test_random_2_1_fleet_2(self):
+        self.assertIn(Generators.generateRandom(2, 1, {2: 1}), VALID_2x1_OCEANS_2)
+    def test_random_2_2_any(self):
         self.assertIn(Generators.generateRandom(2, 2), VALID_2x2_OCEANS)
+    def test_random_2_2_fleet_0(self):
+        self.assertIn(Generators.generateRandom(2, 2, dict()), VALID_2x2_OCEANS_0)
+    def test_random_2_2_fleet_1(self):
+        self.assertIn(Generators.generateRandom(2, 2, {1: 1}), VALID_2x2_OCEANS_1)
+    def test_random_2_2_fleet_2(self):
+        self.assertIn(Generators.generateRandom(2, 2, {2: 1}), VALID_2x2_OCEANS_2)
 
 if __name__ == "__main__":
     unittest.main()

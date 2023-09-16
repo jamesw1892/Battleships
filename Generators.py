@@ -1,18 +1,12 @@
 #!/usr/bin/python3
 
 """
-Functions to generate a Battleship grid.
-
-TODO: NOT TRUE ANYMORE: Each function must abide by the same
+Functions to generate a Battleship grid. Each function must abide by the same
 interface - it must take the desired width, height, and optionally fleet, and
 output the grid. If a fleet is given then that number of each size ships must
-be present. If fleet is None then the default fleet for that size will be used
-as output by the defaultFleet function. If it is impossible to create a valid
-grid with the number of ships of each size determined by the fleet then raise
-a ValueError.
-
-The only exception is generateExhaustive which generates all possible grids of
-the given size so does not take a fleet.
+be present. If fleet is None then any sized fleet can be used. If it is
+impossible to create a valid grid with the number of ships of each size
+determined by the fleet then raise a ValueError.
 """
 
 import Game
@@ -28,7 +22,7 @@ def defaultFleet(width: int, height: int) -> dict[int, int]:
 
 ############################# EXHAUSTIVE GENERATOR #############################
 
-def generateExhaustive(width: int, height: int):
+def generateExhaustive(width: int, height: int, fleet: dict[int, int] | None = None) -> list[list[bool]]:
     """
     Yield possible Ocean grids of the given size.
     """
@@ -39,17 +33,24 @@ def generateExhaustive(width: int, height: int):
         # Convert the 1D iterable of cells into a 2D grid
         grid = Util.make2D(cells, width)
 
-        # Instantiate Ocean and if valid, yield
         try:
-            yield Game.Ocean(grid)
+            ocean = Game.Ocean(grid)
+
+            # If it's valid and matches the desired fleet (if there is one) then
+            # yield it
+            if fleet is None or ocean.getFleet() == fleet:
+                yield grid
+
+        # If it isn't a valid grid then go round again
         except AssertionError:
             pass
 
 ################################## GENERATORS ##################################
 
-def generateRandom(width: int, height: int) -> Game.Ocean:
+def generateRandom(width: int, height: int, fleet: dict[int, int] | None = None) -> list[list[bool]]:
     """
-    Generate a grid randomly.
+    Generate a grid randomly. TODO: Currently hangs if it's impossible to make
+    a valid grid with the given fleet.
     """
 
     while True:
@@ -63,8 +64,14 @@ def generateRandom(width: int, height: int) -> Game.Ocean:
         # Make into the grid shape and convert to bool
         grid = [[digit == "1" for digit in row] for row in Util.make2D(bin_str, width)]
 
-        # If it is a valid grid then return it
         try:
-            return Game.Ocean(grid)
+            ocean = Game.Ocean(grid)
+
+            # If it's valid and matches the desired fleet (if there is one) then
+            # return it
+            if fleet is None or ocean.getFleet() == fleet:
+                return grid
+
+        # If it isn't a valid grid then go round again
         except AssertionError:
             pass
