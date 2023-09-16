@@ -232,6 +232,7 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(Util.padCentre("hi", 4), " hi ")
     def test_pad_centre_short(self):
         self.assertEqual(Util.padCentre("hi", 1), "hi")
+
     def test_intToUnsigned1Byte_neg1(self):
         self.assertRaises(AssertionError, Util.intToUnsigned1Byte, -1)
     def test_intToUnsigned1Byte_256(self):
@@ -246,6 +247,27 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(Util.intToUnsigned1Byte(3), "00000011")
     def test_intToUnsigned1Byte_255(self):
         self.assertEqual(Util.intToUnsigned1Byte(255), "11111111")
+
+    def test_make2D_valid_list_rectangle(self):
+        self.assertEqual(Util.make2D([1, 2, 3, 4], 2), [[1, 2], [3, 4]])
+    def test_make2D_valid_list_uneven(self):
+        self.assertEqual(Util.make2D([1, 2, 3], 2), [[1, 2], [3]])
+    def test_make2D_valid_tuple_rectangle(self):
+        self.assertEqual(Util.make2D((1, 2, 3, 4), 2), [[1, 2], [3, 4]])
+    def test_make2D_valid_tuple_uneven(self):
+        self.assertEqual(Util.make2D((1, 2, 3), 2), [[1, 2], [3]])
+    def test_make2D_edge_empty_iterable(self):
+        self.assertEqual(Util.make2D([], 2), [])
+    def test_make2D_edge_iterable_smaller_width(self):
+        self.assertEqual(Util.make2D([1], 2), [[1]])
+    def test_make2D_invalid_not_iterable(self):
+        self.assertRaises(TypeError, Util.make2D, Game.Ocean(GRID_VALID_1), 2)
+    def test_make2D_invalid_not_int(self):
+        self.assertRaises(TypeError, Util.make2D, [1, 2, 3, 4], "hi")
+    def test_make2D_invalid_zero(self):
+        self.assertRaises(ValueError, Util.make2D, [1, 2, 3, 4], 0)
+    def test_make2D_invalid_neg(self):
+        self.assertRaises(ValueError, Util.make2D, [1, 2, 3, 4], -1)
 
 class TestGenerators(unittest.TestCase):
     def test_exhaustive_1_1(self):

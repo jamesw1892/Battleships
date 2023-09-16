@@ -35,3 +35,18 @@ def intToUnsigned1Byte(num: int) -> str:
     assert 0 <= num <= 255, "Can only represent integers between 0 and 255"
     bin_str = bin(num)[2:]
     return "0" * (8 - len(bin_str)) + bin_str
+
+def make2D(list_1d, length_inner_list: int) -> list[list]:
+    """
+    Return a 2D list from the input 1D iterable of given inner length. The
+    elements from the given iterable will be used to fill lists of the given
+    length repeatedly until all elements are used and return a list of those
+    lists. Raises TypeError if first input is not an iterable and if second
+    input is not an integer. Raises ValueError if second input is zero or
+    negative.
+    """
+    if length_inner_list <= 0:
+        raise ValueError("Inner list length cannot be zero or negative")
+
+    return [list(list_1d[start_index:start_index + length_inner_list])
+            for start_index in range(0, len(list_1d), length_inner_list)]
