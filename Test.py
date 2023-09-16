@@ -269,54 +269,68 @@ class TestUtil(unittest.TestCase):
     def test_make2D_invalid_neg(self):
         self.assertRaises(ValueError, Util.make2D, [1, 2, 3, 4], -1)
 
+VALID_1x1_OCEANS = (
+    Game.Ocean([[False]]),
+    Game.Ocean([[True]])
+)
+
+VALID_1x2_OCEANS = (
+    Game.Ocean([[False],
+                [False]]),
+    Game.Ocean([[False],
+                [True ]]),
+    Game.Ocean([[True ],
+                [False]]),
+    Game.Ocean([[True ],
+                [True ]])
+)
+
+VALID_2x1_OCEANS = (
+    Game.Ocean([[False, False]]),
+    Game.Ocean([[False, True ]]),
+    Game.Ocean([[True , False]]),
+    Game.Ocean([[True , True ]])
+)
+
+VALID_2x2_OCEANS = (
+    Game.Ocean([[False, False],
+                [False, False]]),
+    Game.Ocean([[False, False],
+                [False, True ]]),
+    Game.Ocean([[False, False],
+                [True , False]]),
+    Game.Ocean([[False, False],
+                [True , True ]]),
+    Game.Ocean([[False, True ],
+                [False, False]]),
+    Game.Ocean([[False, True ],
+                [False, True ]]),
+    Game.Ocean([[True , False],
+                [False, False]]),
+    Game.Ocean([[True , False],
+                [True , False]]),
+    Game.Ocean([[True , True ],
+                [False, False]]),
+)
+
 class TestGenerators(unittest.TestCase):
     def test_exhaustive_1_1(self):
-        self.assertEqual(tuple(Generators.generateExhaustive(1, 1)), (
-            Game.Ocean([[False]]),
-            Game.Ocean([[True]])
-        ))
-
+        self.assertEqual(tuple(Generators.generateExhaustive(1, 1)), VALID_1x1_OCEANS)
     def test_exhaustive_1_2(self):
-        self.assertEqual(tuple(Generators.generateExhaustive(1, 2)), (
-            Game.Ocean([[False],
-                        [False]]),
-            Game.Ocean([[False],
-                        [True ]]),
-            Game.Ocean([[True ],
-                        [False]]),
-            Game.Ocean([[True ],
-                        [True ]])
-        ))
-
+        self.assertEqual(tuple(Generators.generateExhaustive(1, 2)), VALID_1x2_OCEANS)
     def test_exhaustive_2_1(self):
-        self.assertEqual(tuple(Generators.generateExhaustive(2, 1)), (
-            Game.Ocean([[False, False]]),
-            Game.Ocean([[False, True ]]),
-            Game.Ocean([[True , False]]),
-            Game.Ocean([[True , True ]])
-        ))
-
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 1)), VALID_2x1_OCEANS)
     def test_exhaustive_2_2(self):
-        self.assertEqual(tuple(Generators.generateExhaustive(2, 2)), (
-            Game.Ocean([[False, False],
-                        [False, False]]),
-            Game.Ocean([[False, False],
-                        [False, True ]]),
-            Game.Ocean([[False, False],
-                        [True , False]]),
-            Game.Ocean([[False, False],
-                        [True , True ]]),
-            Game.Ocean([[False, True ],
-                        [False, False]]),
-            Game.Ocean([[False, True ],
-                        [False, True ]]),
-            Game.Ocean([[True , False],
-                        [False, False]]),
-            Game.Ocean([[True , False],
-                        [True , False]]),
-            Game.Ocean([[True , True ],
-                        [False, False]]),
-        ))
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 2)), VALID_2x2_OCEANS)
+
+    def test_random_1_1(self):
+        self.assertIn(Generators.generateRandom(1, 1), VALID_1x1_OCEANS)
+    def test_random_1_2(self):
+        self.assertIn(Generators.generateRandom(1, 2), VALID_1x2_OCEANS)
+    def test_random_2_1(self):
+        self.assertIn(Generators.generateRandom(2, 1), VALID_2x1_OCEANS)
+    def test_random_2_2(self):
+        self.assertIn(Generators.generateRandom(2, 2), VALID_2x2_OCEANS)
 
 if __name__ == "__main__":
     unittest.main()

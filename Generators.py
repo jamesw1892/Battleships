@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 """
-Functions to generate a Battleship grid. Each function must abide by the same
+Functions to generate a Battleship grid.
+
+TODO: NOT TRUE ANYMORE: Each function must abide by the same
 interface - it must take the desired width, height, and optionally fleet, and
 output the grid. If a fleet is given then that number of each size ships must
 be present. If fleet is None then the default fleet for that size will be used
@@ -15,6 +17,7 @@ the given size so does not take a fleet.
 
 import Game
 import itertools
+import random
 import Util
 
 def defaultFleet(width: int, height: int) -> dict[int, int]:
@@ -44,8 +47,24 @@ def generateExhaustive(width: int, height: int):
 
 ################################## GENERATORS ##################################
 
-def generateRandom(width: int, height: int, fleet: dict[int, int] | None) -> list[list[bool]]:
+def generateRandom(width: int, height: int) -> Game.Ocean:
     """
     Generate a grid randomly.
     """
-    return [[True]] # TODO
+
+    while True:
+
+        # Generate a width * height bit binary number
+        bin_str = bin(random.randint(0, 2 ** (width * height) - 1))[2:]
+
+        # Add leading zeros
+        bin_str = "0" * (width * height - len(bin_str)) + bin_str
+
+        # Make into the grid shape and convert to bool
+        grid = [[digit == "1" for digit in row] for row in Util.make2D(bin_str, width)]
+
+        # If it is a valid grid then return it
+        try:
+            return Game.Ocean(grid)
+        except AssertionError:
+            pass
