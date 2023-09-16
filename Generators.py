@@ -10,11 +10,12 @@ grid with the number of ships of each size determined by the fleet then raise
 a ValueError.
 
 The only exception is generateExhaustive which generates all possible grids of
-the given size so does not take fleet.
+the given size so does not take a fleet.
 """
 
 import Game
 import itertools
+import Util
 
 def defaultFleet(width: int, height: int) -> dict[int, int]:
     """
@@ -24,27 +25,22 @@ def defaultFleet(width: int, height: int) -> dict[int, int]:
 
 ############################# EXHAUSTIVE GENERATOR #############################
 
-def generateExhaustive(width: int, height: int) -> set[Game.Ocean]:
+def generateExhaustive(width: int, height: int):
     """
-    Return a set of all possible Ocean grids of the given size.
-    This is not particularly efficient so use with caution for large sizes
+    Yield possible Ocean grids of the given size.
     """
-
-    grids = set()
 
     # For each possible combination of cells:
-    for cells in itertools.product((True, False), repeat=width*height):
+    for cells in itertools.product((False, True), repeat=width*height):
 
         # Convert the 1D iterable of cells into a 2D grid
         grid = Util.make2D(cells, width)
 
-        # Instantiate Ocean and if valid, add to set
+        # Instantiate Ocean and if valid, yield
         try:
-            grids.add(Game.Ocean(grid))
+            yield Game.Ocean(grid)
         except AssertionError:
             pass
-
-    return grids
 
 ################################## GENERATORS ##################################
 

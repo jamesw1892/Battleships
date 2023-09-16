@@ -271,13 +271,13 @@ class TestUtil(unittest.TestCase):
 
 class TestGenerators(unittest.TestCase):
     def test_exhaustive_1_1(self):
-        self.assertEqual(Generators.generateExhaustive(1, 1), set((
+        self.assertEqual(tuple(Generators.generateExhaustive(1, 1)), (
             Game.Ocean([[False]]),
             Game.Ocean([[True]])
-        )))
+        ))
 
     def test_exhaustive_1_2(self):
-        self.assertEqual(Generators.generateExhaustive(1, 2), set((
+        self.assertEqual(tuple(Generators.generateExhaustive(1, 2)), (
             Game.Ocean([[False],
                         [False]]),
             Game.Ocean([[False],
@@ -286,18 +286,18 @@ class TestGenerators(unittest.TestCase):
                         [False]]),
             Game.Ocean([[True ],
                         [True ]])
-        )))
+        ))
 
     def test_exhaustive_2_1(self):
-        self.assertEqual(Generators.generateExhaustive(2, 1), set((
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 1)), (
             Game.Ocean([[False, False]]),
             Game.Ocean([[False, True ]]),
             Game.Ocean([[True , False]]),
             Game.Ocean([[True , True ]])
-        )))
+        ))
 
     def test_exhaustive_2_2(self):
-        self.assertEqual(Generators.generateExhaustive(2, 2), set((
+        self.assertEqual(tuple(Generators.generateExhaustive(2, 2)), (
             Game.Ocean([[False, False],
                         [False, False]]),
             Game.Ocean([[False, False],
@@ -316,7 +316,7 @@ class TestGenerators(unittest.TestCase):
                         [True , False]]),
             Game.Ocean([[True , True ],
                         [False, False]]),
-        )))
+        ))
 
 if __name__ == "__main__":
     unittest.main()
