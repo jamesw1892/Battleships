@@ -22,6 +22,18 @@ GRID_VALID_1_MASK_1 = [
     [0, 1, 0]
 ]
 
+GRID_VALID_1_MASK_2 = [
+    [1, 1, 1],
+    [1, 1, 1],
+    [1, 1, 1]
+]
+
+GRID_VALID_1_MASK_3 = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+]
+
 GRID_VALID_2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
     [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
@@ -59,24 +71,30 @@ class TestGame(unittest.TestCase):
     def test_fleet_1(self):
         self.assertEqual(Game.Ocean(GRID_VALID_1).getFleet(), {1: 2, 3: 1})
 
-    def test_init_1_mask(self):
+    def test_visible_1_no_mask(self):
+        self.assertEqual(Game.Ocean(GRID_VALID_1).getVisibleGrid(), [[None] * 3] * 3)
+
+    def test_init_1_mask_1(self):
         Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_1)
 
-    def test_visible_1_with_mask(self):
+    def test_visible_1_mask_1(self):
         self.assertEqual(Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_1).getVisibleGrid(), [
-            [True, None, None],
-            [None, None, None],
+            [True, None , None],
+            [None, None , None],
             [None, False, None]
         ])
 
-    def test_visible_1_no_mask(self):
-        self.assertEqual(Game.Ocean(GRID_VALID_1).getVisibleGrid(), [
-            [None, None, None],
-            [None, None, None],
-            [None, None, None]
-        ])
+    def test_init_1_mask_2(self):
+        Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_2)
 
-    #TODO: test invalid mask
+    def test_visible_1_mask_2(self):
+        self.assertEqual(Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_2).getVisibleGrid(), GRID_VALID_1)
+
+    def test_init_1_mask_3(self):
+        Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_3)
+
+    def test_visible_1_mask_2(self):
+        self.assertEqual(Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_3).getVisibleGrid(), [[None] * 3] * 3)
 
     def test_init_2(self):
         Game.Ocean(GRID_VALID_2)
@@ -95,6 +113,9 @@ class TestGame(unittest.TestCase):
 
     def test_fleet_2(self):
         self.assertEqual(Game.Ocean(GRID_VALID_2).getFleet(), {1: 5, 2: 4, 3: 3, 4: 2, 5: 1})
+
+    def test_visible_2_no_mask(self):
+        self.assertEqual(Game.Ocean(GRID_VALID_2).getVisibleGrid(), [[None] * 15] * 15)
 
     def test_invalid_none(self):
         self.assertRaises(AssertionError, Game.Ocean, None)
@@ -151,6 +172,21 @@ class TestGame(unittest.TestCase):
             [0, 1, 0],
             [0, 0, 0]
         ])
+
+    def test_invalid_mask_no_outer_iterable(self):
+        self.assertRaises(AssertionError, Game.Ocean, GRID_VALID_1, Game.Ocean(GRID_VALID_1))
+
+    def test_invalid_mask_no_inner_iterable(self):
+        self.assertRaises(AssertionError, Game.Ocean, GRID_VALID_1, [Game.Ocean(GRID_VALID_1)] * 3)
+
+    def test_invalid_mask_diff_height_to_grid(self):
+        self.assertRaises(AssertionError, Game.Ocean, GRID_VALID_1, [[False] * 3])
+
+    def test_invalid_mask_diff_width_to_grid(self):
+        self.assertRaises(AssertionError, Game.Ocean, GRID_VALID_1, [[False]] * 3)
+
+    def test_invalid_mask_inconsistent_widths(self):
+        self.assertRaises(AssertionError, Game.Ocean, GRID_VALID_1, [[False, False, False], [False, False], [False]])
 
     def test_equal_1obj_1obj(self):
         self.assertTrue(Game.Ocean(GRID_VALID_1) == Game.Ocean(GRID_VALID_1))
