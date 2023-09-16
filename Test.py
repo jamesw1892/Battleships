@@ -16,6 +16,12 @@ GRID_VALID_1 = [
     [1, 0, 1]
 ]
 
+GRID_VALID_1_MASK_1 = [
+    [1, 0, 0],
+    [0, 0, 0],
+    [0, 1, 0]
+]
+
 GRID_VALID_2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
     [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
@@ -52,6 +58,25 @@ class TestGame(unittest.TestCase):
 
     def test_fleet_1(self):
         self.assertEqual(Game.Ocean(GRID_VALID_1).getFleet(), {1: 2, 3: 1})
+
+    def test_init_1_mask(self):
+        Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_1)
+
+    def test_visible_1_with_mask(self):
+        self.assertEqual(Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_1).getVisibleGrid(), [
+            [True, None, None],
+            [None, None, None],
+            [None, False, None]
+        ])
+
+    def test_visible_1_no_mask(self):
+        self.assertEqual(Game.Ocean(GRID_VALID_1).getVisibleGrid(), [
+            [None, None, None],
+            [None, None, None],
+            [None, None, None]
+        ])
+
+    #TODO: test invalid mask
 
     def test_init_2(self):
         Game.Ocean(GRID_VALID_2)

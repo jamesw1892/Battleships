@@ -7,11 +7,16 @@ Main Ocean class for representing and getting information from the grid.
 import Util
 
 class Ocean:
-    def __init__(self, grid: list[list[bool]]):
+    def __init__(self, grid: list[list[bool]], mask: list[list[bool]] = None):
         """
         Create an ocean with the given 2D Boolean grid of whether a ship is in
-        each position. An AssertionError will be thrown if it is invalid.
+        each position. Also provide an optional mask indicating which cells are
+        given to the player (as either ship or water) at the start of a game. If
+        not provided, no cells are given. An AssertionError will be thrown if
+        either is invalid.
         """
+
+        # Validate grid
         self.grid = grid
         try:
             self.height = len(grid)
@@ -25,6 +30,23 @@ class Ocean:
             assert False, "Grid must be an iterable containing iterables containing bools"
 
         assert 1 <= self.height <= 255 and 1 <= self.width <= 255, "Grid must be at least 1x1 and at most 255x255"
+
+        # If mask not given, default to all cells invisible
+        self.mask = mask
+        if self.mask is None:
+            self.mask = [[False] * self.width] * self.height
+
+        # If given, validate
+        else:
+            try:
+                assert len(self.mask) == self.height, "Mask must have same dimensions as grid"
+                for row in self.mask:
+                    assert len(row) == self.width, "Mask must have same dimensions as grid"
+                    for index, cell in enumerate(row):
+                        row[index] = bool(cell)
+
+            except TypeError:
+                assert False, "Mask must be an iterable containing iterables containing bools"
 
         # Create a deep copy of grid to calculate fleet and check valid
         self.fleet = dict()
@@ -130,6 +152,13 @@ class Ocean:
         cells in that column containing (part of a) ship.
         """
         return [sum(int(row[col_index]) for row in self.grid) for col_index in range(self.width)]
+
+    def getVisibleGrid(self) -> list[list[bool | None]]:
+        """
+        Return the visible cells in the grid. Visible cells are True if ship and
+        False if water. Invisible cells are None.
+        """
+        return [[self.grid[r][c] if self.mask[r][c] else None for c in range(self.width)] for r in range(self.height)]
 
     def __str__(self):
         """
