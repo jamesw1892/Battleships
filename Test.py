@@ -72,29 +72,33 @@ class TestGame(unittest.TestCase):
         self.assertEqual(Game.Ocean(GRID_VALID_1).getFleet(), {1: 2, 3: 1})
 
     def test_visible_1_no_mask(self):
-        self.assertEqual(Game.Ocean(GRID_VALID_1).getVisibleGrid(), [[None] * 3] * 3)
+        self.assertEqual(Game.Ocean(GRID_VALID_1).getVisibleGrid(), [[Game.VisibleCell.INVISIBLE] * 3] * 3)
 
     def test_init_1_mask_1(self):
         Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_1)
 
     def test_visible_1_mask_1(self):
         self.assertEqual(Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_1).getVisibleGrid(), [
-            [True, None , None],
-            [None, None , None],
-            [None, False, None]
+            [Game.VisibleCell.SINGLETON, Game.VisibleCell.INVISIBLE, Game.VisibleCell.INVISIBLE],
+            [Game.VisibleCell.INVISIBLE, Game.VisibleCell.INVISIBLE, Game.VisibleCell.INVISIBLE],
+            [Game.VisibleCell.INVISIBLE, Game.VisibleCell.WATER    , Game.VisibleCell.INVISIBLE]
         ])
 
     def test_init_1_mask_2(self):
         Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_2)
 
     def test_visible_1_mask_2(self):
-        self.assertEqual(Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_2).getVisibleGrid(), GRID_VALID_1)
+        self.assertEqual(Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_2).getVisibleGrid(), [
+            [Game.VisibleCell.SINGLETON, Game.VisibleCell.WATER    , Game.VisibleCell.END_DOWN],
+            [Game.VisibleCell.WATER    , Game.VisibleCell.WATER    , Game.VisibleCell.MIDDLE  ],
+            [Game.VisibleCell.SINGLETON, Game.VisibleCell.WATER    , Game.VisibleCell.END_UP  ]
+        ])
 
     def test_init_1_mask_3(self):
         Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_3)
 
     def test_visible_1_mask_2(self):
-        self.assertEqual(Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_3).getVisibleGrid(), [[None] * 3] * 3)
+        self.assertEqual(Game.Ocean(GRID_VALID_1, GRID_VALID_1_MASK_3).getVisibleGrid(), [[Game.VisibleCell.INVISIBLE] * 3] * 3)
 
     def test_init_2(self):
         Game.Ocean(GRID_VALID_2)
@@ -115,7 +119,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(Game.Ocean(GRID_VALID_2).getFleet(), {1: 5, 2: 4, 3: 3, 4: 2, 5: 1})
 
     def test_visible_2_no_mask(self):
-        self.assertEqual(Game.Ocean(GRID_VALID_2).getVisibleGrid(), [[None] * 15] * 15)
+        self.assertEqual(Game.Ocean(GRID_VALID_2).getVisibleGrid(), [[Game.VisibleCell.INVISIBLE] * 15] * 15)
 
     def test_invalid_none(self):
         self.assertRaises(AssertionError, Game.Ocean, None)

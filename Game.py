@@ -5,6 +5,23 @@ Main Ocean class for representing and getting information from the grid.
 """
 
 import Util
+from enum import Enum
+
+class VisibleCell(Enum):
+    """
+    An enum representing a visible cell in the grid that is given at the start.
+    It is not only known whether or not there is a ship there, but also the
+    'shape' of that ship - whether it is a singleton, the middle of a ship, or
+    the end of a ship, extending up, right, down, or left.
+    """
+    INVISIBLE = -1
+    WATER = 0
+    SINGLETON = 1
+    MIDDLE = 2
+    END_UP = 3
+    END_RIGHT = 4
+    END_DOWN = 5
+    END_LEFT = 6
 
 class Ocean:
     def __init__(self, grid: list[list[bool]], mask: list[list[bool]] = None):
@@ -153,12 +170,45 @@ class Ocean:
         """
         return [sum(int(row[col_index]) for row in self.grid) for col_index in range(self.width)]
 
-    def getVisibleGrid(self) -> list[list[bool | None]]:
+    def getVisibleGrid(self) -> list[list[VisibleCell]]:
         """
-        Return the visible cells in the grid. Visible cells are True if ship and
-        False if water. Invisible cells are None.
+        Return the visible cells in the grid - a grid of the enum VisibleCell.
         """
-        return [[self.grid[r][c] if self.mask[r][c] else None for c in range(self.width)] for r in range(self.height)]
+
+        def calcVisibleCell(r: int, c: int) -> VisibleCell:
+            if not self.mask[r][c]:
+                return VisibleCell.INVISIBLE
+            
+            if not self.grid[r][c]:
+                return VisibleCell.WATER
+
+            up, right, down, left = False, False, False, False
+            if r >= 1 and self.grid[r - 1][c]:
+                up = True
+            if c <= self.width - 2 and self.grid[r][c + 1]:
+                right = True
+            if r <= self.height - 2 and self.grid[r + 1][c]:
+                down = True
+            if c >= 1 and self.grid[r][c - 1]:
+                left = True
+
+            num_dirs = sum((up, right, down, left))
+            if num_dirs == 0:
+                return VisibleCell.SINGLETON
+            if num_dirs == 2:
+                return VisibleCell.MIDDLE
+            
+            assert num_dirs == 1, f"Two ships adjacent around cell ({c}, {r})"
+
+            if up:
+                return VisibleCell.END_UP
+            if right:
+                return VisibleCell.END_RIGHT
+            if down:
+                return VisibleCell.END_DOWN
+            return VisibleCell.END_LEFT
+
+        return [[calcVisibleCell(r, c) for c in range(self.width)] for r in range(self.height)]
 
     def __str__(self):
         """
